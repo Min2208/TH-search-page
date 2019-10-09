@@ -16,11 +16,11 @@ public class ProvinceFormatter implements Formatter<Province> {
     }
     @Override
     public Province parse(String text, Locale locale) throws ParseException {
-        return null;
+        return provinceService.findOne(Long.parseLong(text));
     }
 
     @Override
     public String print(Province object, Locale locale) {
-        return null;
+        return "[" + object.getId()+ "," +object.getName()+"]";
     }
 }
