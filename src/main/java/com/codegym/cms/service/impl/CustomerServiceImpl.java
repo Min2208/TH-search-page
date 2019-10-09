@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
+
     private Iterable<Customer> customers;
 
     @Override
@@ -75,6 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void delete(Long id) {
         customerRepository.delete(id);
+
     }
 
     @Override
