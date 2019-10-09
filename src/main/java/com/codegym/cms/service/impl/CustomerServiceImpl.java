@@ -15,6 +15,7 @@ import java.util.stream.StreamSupport;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
+    private Iterable<Customer> customers;
 
     @Override
     public List<Customer> findAll() {
@@ -96,6 +97,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private Stream<Customer> streamAll(Iterable<Customer> customers) {
+        this.customers = customers;
         return StreamSupport.stream(customers.spliterator(), false);
     }
 

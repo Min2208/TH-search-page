@@ -136,13 +136,11 @@ private ApplicationContext appContext;
         return new ProvinceServiceImpl();
     }
 
-//    @Bean
-//    public void AddFormatter(FormatterRegistry registry){
-//        ProvinceService provinceService=appContext.getBean(ProvinceService.class);
-//        Formatter provinceFormatter= new ProvinceFormatter(provinceService);
-//        registry.addFormatter(provinceFormatter);
-//
-//    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new ProvinceFormatter(appContext.getBean(ProvinceService.class)));
+    }
 
 
 }
