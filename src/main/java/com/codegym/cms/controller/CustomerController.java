@@ -51,18 +51,18 @@ public class CustomerController {
     public ResponseEntity<List<Customer>> listAllCustomers() {
         List<Customer> customers = customerService.findAll();
         if (customers.isEmpty()) {
-            return new ResponseEntity<List<Customer>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<List<Customer>>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/customers/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder) {
-        customerService.save(customer);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(customer.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-    }
+//    @RequestMapping(value = "/customers/", method = RequestMethod.POST)
+//    public ResponseEntity<Void> createCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder) {
+//        customerService.save(customer);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(customer.getId()).toUri());
+//        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+//    }
 
     @RequestMapping(value = "/customers", method = RequestMethod.POST)
     public ResponseEntity<Void> addCustomer(@RequestBody Customer customer){
@@ -70,10 +70,30 @@ public class CustomerController {
         customerService.save(customer);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
+
     @RequestMapping(value = "/customers/{id}",method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") long id){
         customerService.delete(id);
         return new ResponseEntity<Void>(HttpStatus.MOVED_PERMANENTLY);
+    }
+    @RequestMapping(value = "/customers/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Customer> updateCustomer(@PathVariable("id") long id, @RequestBody Customer customer) {
+        System.out.println("Updating Customer " + id);
+
+        Customer currentCustomer = customerService.findOne(id);
+
+        if (currentCustomer == null) {
+            System.out.println("Customer with id " + id + " not found");
+            return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
+        }
+
+        currentCustomer.setName(customer.getName());
+        currentCustomer.setEmail(customer.getEmail());
+        currentCustomer.setId(customer.getId());
+        currentCustomer.setAddress(customer.getAddress());
+
+        customerService.save(currentCustomer);
+        return new ResponseEntity<Customer>(currentCustomer, HttpStatus.OK);
     }
 
 }
